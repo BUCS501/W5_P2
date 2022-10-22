@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:columnCount="2"
+    android:rowCount="1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+
+    >
+
 
     <Button
         android:id="@+id/left_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_columnWeight="1"
+        android:layout_margin="3dp"
         android:text="@string/left_btn" />
 
     <Button
         android:id="@+id/right_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_columnWeight="1"
+        android:layout_margin="3dp"
         android:text="@string/right_btn" />
-</LinearLayout>
+</GridLayout>
