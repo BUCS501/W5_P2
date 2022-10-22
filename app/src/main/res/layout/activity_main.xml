@@ -7,9 +7,20 @@
     android:orientation="vertical"
     tools:context=".MainActivity" >
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/left_right_fragment"
-        android:name="com.example.w5_p2.LeftRight"
+    <LinearLayout
+        android:id="@+id/left_right"
         android:layout_width="match_parent"
-        android:layout_height="146dp" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical" />
+
+    <LinearLayout
+        android:id="@+id/image_rating"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:orientation="vertical" />
+
+
+
 </LinearLayout>
