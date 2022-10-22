@@ -7,6 +7,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+
+import java.util.*;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +24,10 @@ public class LeftRight extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private int lastPressed = 0; // 0 when initialized, -1 if left, 1 if right
+
+    private Button left_btn;
+    private Button right_btn;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -60,5 +69,28 @@ public class LeftRight extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_left_right, container, false);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        View fragmentView = getView();
+        left_btn = (Button) fragmentView.findViewById(R.id.left_btn);
+        right_btn = (Button) fragmentView.findViewById(R.id.right_btn);
+
+        left_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                lastPressed = -1;
+            }
+        });
+
+        right_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                lastPressed = 1;
+            }
+        });
+
     }
 }
