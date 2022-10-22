@@ -1,15 +1,18 @@
 package com.example.w5_p2;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +23,7 @@ import java.util.HashMap;
  * create an instance of this fragment.
  */
 public class ImageRating extends Fragment {
-
+    private LeftRight.Callbacks mCallbacks = sDummyCallbacks;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -32,7 +35,14 @@ public class ImageRating extends Fragment {
 
     private ImageView image;
     private RatingBar ratingBar;
+    public interface Callbacks {
+        public void updateImage(int change);
+    }
 
+    private static LeftRight.Callbacks sDummyCallbacks = new LeftRight.Callbacks( ) {
+        public void updateImage(int change){};
+
+    };
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -59,6 +69,20 @@ public class ImageRating extends Fragment {
         return fragment;
     }
 
+    public void onAttach( Context context ) {
+        super.onAttach( context );
+        if ( !( context instanceof LeftRight.Callbacks) ) {
+            throw new IllegalStateException(
+                    "Context must implement fragment's callbacks." );
+        }
+        mCallbacks = (LeftRight.Callbacks) context;
+    }
+
+    public void onDetach( ) {
+        super.onDetach( );
+        mCallbacks = sDummyCallbacks;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +90,22 @@ public class ImageRating extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_image_rating, container, false);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        View fragmentView = getView();
+        image = (ImageView) fragmentView.findViewById(R.id.curr_image);
+        ratingBar = (RatingBar) fragmentView.findViewById(R.id.ratingBar);
         images.add(R.drawable.bear);
         ratingDict.put(R.drawable.bear, 0.0F);
         images.add(R.drawable.corgi);
@@ -90,19 +130,9 @@ public class ImageRating extends Fragment {
         });
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_image_rating, container, false);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
     public void updateIndex(int change) {
+
+
         int newIndex = currIndex + change;
         if (newIndex < 0) {
             newIndex = images.size() - 1;

@@ -1,5 +1,6 @@
 package com.example.w5_p2;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -19,7 +20,7 @@ import java.util.*;
  * create an instance of this fragment.
  */
 public class LeftRight extends Fragment {
-
+    private Callbacks mCallbacks = sDummyCallbacks;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -35,6 +36,34 @@ public class LeftRight extends Fragment {
 
     public LeftRight() {
         // Required empty public constructor
+    }
+
+
+    public interface Callbacks {
+       public void updateImage(int change);
+    }
+
+    private static Callbacks sDummyCallbacks = new Callbacks( ) {
+        public void updateImage(int change){};
+
+    };
+
+    public void onAttach( Context context ) {
+        super.onAttach( context );
+        if ( !( context instanceof Callbacks ) ) {
+            throw new IllegalStateException(
+                    "Context must implement fragment's callbacks." );
+        }
+        mCallbacks = ( Callbacks ) context;
+    }
+
+    public void onDetach( ) {
+        super.onDetach( );
+        mCallbacks = sDummyCallbacks;
+    }
+
+    public void updateImage(int change) {
+        mCallbacks.updateImage(change);
     }
 
     /**
@@ -81,14 +110,15 @@ public class LeftRight extends Fragment {
         left_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                lastPressed = -1;
+                updateImage(-1);
             }
         });
 
         right_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                lastPressed = 1;
+
+                updateImage(1);
             }
         });
 
